@@ -72,7 +72,7 @@ model = VGG().to(device).eval()
 total_steps = 10000
 learning_rate = 0.001
 alpha = 1
-beta = 0.1
+beta = 0.3
 optimizer = optim.Adam([generated], lr=learning_rate)
 loss = []
 for step in range(total_steps):
