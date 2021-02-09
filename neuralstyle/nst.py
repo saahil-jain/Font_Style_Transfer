@@ -38,7 +38,7 @@ class VGG(nn.Module):
 
 
 def load_image(image_name):
-    image = Image.open(image_name)
+    image = Image.open(image_name).convert('RGB')
     image = loader(image).unsqueeze(0)
     return image.to(device)
 
@@ -76,6 +76,7 @@ beta = 0.01
 optimizer = optim.Adam([generated], lr=learning_rate)
 
 for step in range(total_steps):
+    print(step,"/",total_steps)
     # Obtain the convolution features in specifically chosen layers
     generated_features = model(generated)
     original_img_features = model(original_img)
