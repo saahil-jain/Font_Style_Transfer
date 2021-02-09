@@ -58,8 +58,8 @@ loader = transforms.Compose(
     ]
 )
 
-original_img = load_image("annahathaway.png")
-style_img = load_image("style.jpg")
+original_img = load_image("da.png")
+style_img = load_image("styles/style11.png")
 
 # initialized generated as white noise or clone of original image.
 # Clone seemed to work better for me.
