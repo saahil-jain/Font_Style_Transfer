@@ -69,7 +69,7 @@ generated = original_img.clone().requires_grad_(True)
 model = VGG().to(device).eval()
 
 # Hyperparameters
-total_steps = 6000
+total_steps = 10000
 learning_rate = 0.01
 alpha = 1
 beta = 0.1
