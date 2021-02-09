@@ -44,7 +44,7 @@ def load_image(image_name):
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-imsize = 356
+imsize = 200
 
 # Here we may want to use the Normalization constants used in the original
 # VGG network (to get similar values net was originally trained on), but
@@ -58,8 +58,8 @@ loader = transforms.Compose(
     ]
 )
 
-original_img = load_image("da.png")
-style_img = load_image("styles/style11.png")
+original_img = load_image("kha.png")
+style_img = load_image("styles/style8.png")
 
 # initialized generated as white noise or clone of original image.
 # Clone seemed to work better for me.
