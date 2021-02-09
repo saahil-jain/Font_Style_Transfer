@@ -70,9 +70,9 @@ model = VGG().to(device).eval()
 
 # Hyperparameters
 total_steps = 6000
-learning_rate = 0.001
+learning_rate = 0.005
 alpha = 1
-beta = 0.01
+beta = 0.05
 optimizer = optim.Adam([generated], lr=learning_rate)
 
 for step in range(total_steps):
@@ -108,6 +108,6 @@ for step in range(total_steps):
     total_loss.backward()
     optimizer.step()
 
-    if step % 200 == 0:
+    if step % 100 == 0:
         print(total_loss)
         save_image(generated, "generated.png")
