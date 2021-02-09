@@ -110,7 +110,7 @@ for step in range(total_steps):
 
     if step % 100 == 0:
         print(total_loss)
-        loss.append(total_loss)
+        loss.append(total_loss.detach().numpy())
         save_image(generated, "generated.png")
 
 print(loss)
