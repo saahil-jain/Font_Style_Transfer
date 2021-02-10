@@ -1,11 +1,11 @@
 import torch
 import torch.nn as nn
-import torch.optim as optim
 from PIL import Image
-import torchvision.transforms as transforms
+import torch.optim as optim
+import matplotlib.pyplot as plt  
 import torchvision.models as models
 from torchvision.utils import save_image
-
+import torchvision.transforms as transforms
 
 class VGG(nn.Module):
     def __init__(self):
@@ -38,8 +38,12 @@ class VGG(nn.Module):
 
 
 def load_image(image_name):
-    image = Image.open(image_name).convert('RGB')
-    image = loader(image).unsqueeze(0)
+    im = Image.open(image_name)
+    color=(255, 255, 255)
+    im.load()  # needed for split()
+    background = Image.new('RGB', im.size, color)
+    background.paste(im, mask=im.split()[3])
+    image = loader(background).unsqueeze(0)
     return image.to(device)
 
 
@@ -65,14 +69,15 @@ style_img = load_image("styles/style8.png")
 # Clone seemed to work better for me.
 
 # generated = torch.randn(original_img.data.shape, device=device, requires_grad=True)
+# generated = load_image("kha.png").requires_grad_(True)
 generated = original_img.clone().requires_grad_(True)
 model = VGG().to(device).eval()
 
 # Hyperparameters
 total_steps = 10000
-learning_rate = 0.0002
+learning_rate = 0.01
 alpha = 1
-beta = 0.3
+beta = 0.5
 optimizer = optim.Adam([generated], lr=learning_rate)
 loss = []
 for step in range(total_steps):
@@ -114,3 +119,9 @@ for step in range(total_steps):
         save_image(generated, "generated.png")
 
 print(loss)
+x = np.arange(len(loss))
+plt.title("Line graph")  
+plt.xlabel("X axis")  
+plt.ylabel("Y axis")  
+plt.plot(x, loss, color ="green")  
+plt.show()
