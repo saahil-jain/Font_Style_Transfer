@@ -135,8 +135,6 @@ def get_predictions(autoencoder, filename, X_data, Y_data = []):
   CHANELS = get_configs("CHANELS")
   print("\n\nResults :")
   n = min(15, len(X_data)-1)
-  if not os.path.isdir("Images"):
-    os.mkdir("Images")
   if len(Y_data) == 0:
     rows = 2
   else:

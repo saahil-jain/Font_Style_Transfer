@@ -7,8 +7,10 @@ def main(Y):
   trainX, testX, trainY, testY = get_data(Y)
   autoencoder = get_model()
   history = train_model(autoencoder, trainX, testX, trainY, testY, Y)
-  plot_history(history, Y+"_history")
 
+  if not os.path.isdir("Images"):
+    os.mkdir("Images")
+  plot_history(history, Y+"_history")
   get_predictions(autoencoder, Y+"_train", trainX, trainY)
   get_predictions(autoencoder, Y+"_test", testX, testY)
 

@@ -6,7 +6,9 @@ def main(Y):
 
   trainX, testX, trainY, testY = get_data(Y)
   autoencoder = get_best_model(Y)
-
+  
+  if not os.path.isdir("Images"):
+    os.mkdir("Images")
   get_predictions(autoencoder, Y+"_train", trainX, trainY)
   get_predictions(autoencoder, Y+"_test", testX, testY)
 
