@@ -11,6 +11,7 @@ import numpy as np
 import keras
 import sys
 import os
+from configs import *
 
 def create_data(data_path):
   image_paths = sorted(list(paths.list_images(data_path)))
@@ -41,6 +42,8 @@ def display_details(data):
   print()
 
 def get_data(X,Y):
+  BASE = get_Base()
+  X = get_X
   print("Training Data :\n")
   print("X Data :")
   x_data = create_data(BASE + X)
@@ -185,11 +188,7 @@ def main(Y):
   display_details(kannada_data)
   get_predictions(autoencoder, Y+"_kannada", kannada_data)
 
-DIMS = 256
-CHANELS = 1
-EPOCHS = 1
-BASE = "Fonts/English_Fonts/"
-X = "Screen_Sans_Normal"
+DIMS, CHANELS, EPOCHS, BASE, X = get_configs()
 if __name__=="__main__":
   Y = sys.argv[1]
   main(Y)
