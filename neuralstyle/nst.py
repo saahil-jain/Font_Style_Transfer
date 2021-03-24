@@ -66,6 +66,7 @@ target_name = sys.argv[1]
 original_img = load_image(target_name)
 style_imgs = []
 style_name = sys.argv[2]
+result_file = "Generated/"+style_name+"/"+target_name
 # style_img_names = os.listdir('English_Fonts/'+ style_name)
 # style_img_names.sort()
 # style_img_names = style_img_names[36:]
@@ -144,7 +145,7 @@ for step in range(1,total_steps+1):
     optimizer.step()
     
     if step % 100 == 0:
-        save_image(generated, "generated.png")
+        save_image(generated, result_file)
     # if step % 1000 == 0:
     #     save_image(generated, "generated_"+str(step)+".png")
         
