@@ -63,10 +63,11 @@ loader = transforms.Compose(
     ]
 )
 target_name = sys.argv[1]
-original_img = load_image(target_name)
 style_imgs = []
 style_name = sys.argv[2]
 result_file = "Generated/"+style_name+"/"+target_name
+target_name = "Kannada_Fonts/Belur/" + target_name
+original_img = load_image(target_name)
 # style_img_names = os.listdir('English_Fonts/'+ style_name)
 # style_img_names.sort()
 # style_img_names = style_img_names[36:]
