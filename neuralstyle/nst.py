@@ -1,6 +1,8 @@
 import torch
-import torch.nn as nn
+import sys
+import numpy as np
 from PIL import Image
+import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt  
 import torchvision.models as models
@@ -48,7 +50,7 @@ def load_image(image_name):
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-imsize = 200
+imsize = 400
 
 # Here we may want to use the Normalization constants used in the original
 # VGG network (to get similar values net was originally trained on), but
@@ -57,13 +59,23 @@ imsize = 200
 loader = transforms.Compose(
     [
         transforms.Resize((imsize, imsize)),
-        transforms.ToTensor(),
-        # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        transforms.ToTensor()
     ]
 )
-
-original_img = load_image("kha.png")
-style_img = load_image("styles/style8.png")
+target_name = sys.argv[1]
+original_img = load_image(target_name)
+style_imgs = []
+style_name = "Locomo"
+# style_img_names = os.listdir('English_Fonts/'+ style_name)
+# style_img_names.sort()
+# style_img_names = style_img_names[36:]
+# style_img_names = ["008.png", "020.png", "028.png", "041.png", "042.png", "059.png"]
+style_img_names = ["042.png"]
+print(len(style_img_names))
+for style_img_name in style_img_names:
+    print(style_img_name)
+    style_img = load_image('English_Fonts/'+ style_name + "/" + style_img_name)
+    style_imgs.append(style_img)
 
 # initialized generated as white noise or clone of original image.
 # Clone seemed to work better for me.
@@ -76,47 +88,66 @@ model = VGG().to(device).eval()
 # Hyperparameters
 total_steps = 10000
 learning_rate = 0.01
-alpha = 1
-beta = 0.5
+alpha = 0.001
+beta = 1
 optimizer = optim.Adam([generated], lr=learning_rate)
 loss = []
-for step in range(total_steps):
-    print(step,"/",total_steps)
+
+best_loss = 100000000000
+
+for step in range(1,total_steps+1):
+    print("{0:6d}".format(step),"/","{0:6d}".format(total_steps), end=" : ")
     # Obtain the convolution features in specifically chosen layers
     generated_features = model(generated)
     original_img_features = model(original_img)
-    style_features = model(style_img)
+    style_features_all = []
+    for style_img in style_imgs:
+        style_features = model(style_img)
+        style_features_all.append(style_features)
 
     # Loss is 0 initially
     style_loss = original_loss = 0
 
-    # iterate through all the features for the chosen layers
-    for gen_feature, orig_feature, style_feature in zip(
-        generated_features, original_img_features, style_features
-    ):
-
-        # batch_size will just be 1
-        batch_size, channel, height, width = gen_feature.shape
-        original_loss += torch.mean((gen_feature - orig_feature) ** 2)
-        # Compute Gram Matrix of generated
-        G = gen_feature.view(channel, height * width).mm(
-            gen_feature.view(channel, height * width).t()
-        )
-        # Compute Gram Matrix of Style
-        A = style_feature.view(channel, height * width).mm(
-            style_feature.view(channel, height * width).t()
-        )
-        style_loss += torch.mean((G - A) ** 2)
-
+#     # iterate through all the features for the chosen layers
+#     for gen_feature, orig_feature in zip(
+#         generated_features, original_img_features):
+#         # batch_size will just be 1
+#         batch_size, channel, height, width = gen_feature.shape
+#         original_loss += torch.mean((gen_feature - orig_feature) ** 2)
+    
+    for style_features in style_features_all:
+        for gen_feature, style_feature in zip(
+            generated_features, style_features):
+            # batch_size will just be 1
+            batch_size, channel, height, width = gen_feature.shape
+            # Compute Gram Matrix of generated
+            G = gen_feature.view(channel, height * width).mm(
+                gen_feature.view(channel, height * width).t()
+            )
+            # Compute Gram Matrix of Style
+            A = style_feature.view(channel, height * width).mm(
+                style_feature.view(channel, height * width).t()
+            )
+            style_loss += torch.mean((G - A) ** 2)
+            
+    style_loss/=len(style_features_all)
     total_loss = alpha * original_loss + beta * style_loss
+    loss.append(total_loss.item())
+    if step == 5:
+        best_loss = total_loss
+    else:
+        best_loss = total_loss
+    print("{0:6.2f}".format(alpha * original_loss), ":", "{0:12.2f}".format(beta * style_loss), ":", "{0:12.2f}".format(best_loss))
+        
     optimizer.zero_grad()
     total_loss.backward()
     optimizer.step()
-
+    
     if step % 100 == 0:
-        print(total_loss)
-        loss.append(total_loss.item())
         save_image(generated, "generated.png")
+    if step % 1000 == 0:
+        save_image(generated, "../generated_"+str(step)+".png")
+        
 
 print(loss)
 x = np.arange(len(loss))
@@ -125,3 +156,6 @@ plt.xlabel("X axis")
 plt.ylabel("Y axis")  
 plt.plot(x, loss, color ="green")  
 plt.show()
+
+img_array = np.array(Image.open('generated.png'))
+plt.imshow(img_array)
