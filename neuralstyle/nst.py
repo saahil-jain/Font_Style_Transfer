@@ -86,14 +86,14 @@ generated = original_img.clone().requires_grad_(True)
 model = VGG().to(device).eval()
 
 # Hyperparameters
-total_steps = 10000
+total_steps = 5000
 learning_rate = 0.01
 alpha = 0.001
 beta = 1
 optimizer = optim.Adam([generated], lr=learning_rate)
 loss = []
 
-best_loss = 100000000000
+best_loss = 0
 
 for step in range(1,total_steps+1):
     print("{0:6d}".format(step),"/","{0:6d}".format(total_steps), end=" : ")
@@ -133,7 +133,7 @@ for step in range(1,total_steps+1):
     style_loss/=len(style_features_all)
     total_loss = alpha * original_loss + beta * style_loss
     loss.append(total_loss.item())
-    if step == 5:
+    if step == 1:
         best_loss = total_loss
     else:
         best_loss = total_loss
@@ -145,17 +145,17 @@ for step in range(1,total_steps+1):
     
     if step % 100 == 0:
         save_image(generated, "generated.png")
-    if step % 1000 == 0:
-        save_image(generated, "../generated_"+str(step)+".png")
+    # if step % 1000 == 0:
+    #     save_image(generated, "generated_"+str(step)+".png")
         
 
-print(loss)
-x = np.arange(len(loss))
-plt.title("Line graph")  
-plt.xlabel("X axis")  
-plt.ylabel("Y axis")  
-plt.plot(x, loss, color ="green")  
-plt.show()
+# print(loss)
+# x = np.arange(len(loss))
+# plt.title("Line graph")  
+# plt.xlabel("X axis")  
+# plt.ylabel("Y axis")  
+# plt.plot(x, loss, color ="green")  
+# plt.show()
 
-img_array = np.array(Image.open('generated.png'))
-plt.imshow(img_array)
+# img_array = np.array(Image.open('generated.png'))
+# plt.imshow(img_array)
