@@ -111,12 +111,12 @@ for step in tqdm(range(1,total_steps+1)):
     # Loss is 0 initially
     style_loss = original_loss = 0
 
-#     # iterate through all the features for the chosen layers
-#     for gen_feature, orig_feature in zip(
-#         generated_features, original_img_features):
-#         # batch_size will just be 1
-#         batch_size, channel, height, width = gen_feature.shape
-#         original_loss += torch.mean((gen_feature - orig_feature) ** 2)
+    # iterate through all the features for the chosen layers
+    for gen_feature, orig_feature in zip(
+        generated_features, original_img_features):
+        # batch_size will just be 1
+        batch_size, channel, height, width = gen_feature.shape
+        original_loss += torch.mean((gen_feature - orig_feature) ** 2)
     
     for style_features in style_features_all:
         for gen_feature, style_feature in zip(
