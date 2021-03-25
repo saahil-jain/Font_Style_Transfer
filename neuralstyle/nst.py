@@ -2,6 +2,7 @@ import torch
 import sys
 import numpy as np
 from PIL import Image
+from tqdm import tqdm
 import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt  
@@ -97,7 +98,7 @@ loss = []
 
 best_loss = 0
 
-for step in range(1,total_steps+1):
+for step in tqdm(range(1,total_steps+1)):
     print("{0:6d}".format(step),"/","{0:6d}".format(total_steps), end=" : ")
     # Obtain the convolution features in specifically chosen layers
     generated_features = model(generated)
