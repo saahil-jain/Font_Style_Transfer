@@ -69,14 +69,13 @@ style_name = sys.argv[2]
 result_file = "Generated/"+style_name+"/"+target_name
 target_name = "Kannada_Fonts/Belur/" + target_name
 original_img = load_image(target_name)
+print(style_name, "-", target_name)
 # style_img_names = os.listdir('English_Fonts/'+ style_name)
 # style_img_names.sort()
 # style_img_names = style_img_names[36:]
 # style_img_names = ["008.png", "020.png", "028.png", "041.png", "042.png", "059.png"]
 style_img_names = ["042.png"]
-print(len(style_img_names))
 for style_img_name in style_img_names:
-    print(style_img_name)
     style_img = load_image('English_Fonts/'+ style_name + "/" + style_img_name)
     style_imgs.append(style_img)
 
@@ -89,17 +88,17 @@ generated = original_img.clone().requires_grad_(True)
 model = VGG().to(device).eval()
 
 # Hyperparameters
-total_steps = 5000
+total_steps = 10000
 learning_rate = 0.01
-alpha = 0.001
-beta = 1
+alpha = 10
+beta = 0.002
 optimizer = optim.Adam([generated], lr=learning_rate)
 loss = []
 
 best_loss = 0
 
 for step in tqdm(range(1,total_steps+1)):
-    print("{0:6d}".format(step),"/","{0:6d}".format(total_steps), end=" : ")
+    # print("{0:6d}".format(step),"/","{0:6d}".format(total_steps), end=" : ")
     # Obtain the convolution features in specifically chosen layers
     generated_features = model(generated)
     original_img_features = model(original_img)
@@ -140,7 +139,7 @@ for step in tqdm(range(1,total_steps+1)):
         best_loss = total_loss
     else:
         best_loss = total_loss
-    print("{0:6.2f}".format(alpha * original_loss), ":", "{0:12.2f}".format(beta * style_loss), ":", "{0:12.2f}".format(best_loss))
+    # print("{0:6.2f}".format(alpha * original_loss), ":", "{0:12.2f}".format(beta * style_loss), ":", "{0:12.2f}".format(best_loss))
         
     optimizer.zero_grad()
     total_loss.backward()
