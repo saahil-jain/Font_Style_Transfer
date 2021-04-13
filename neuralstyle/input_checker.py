@@ -71,7 +71,7 @@ result_file_input = "Input_letter_tester/"+style_letter[:-4] + "_I.png"
 result_file_output = "Input_letter_tester/"+style_letter[:-4] + "_O.png"
 target_name = "Kannada_Fonts/Belur/" + target_name
 original_img = load_image(target_name)
-print(style_name, "-", target_name)
+print(style_name, "-", style_letter)
 # style_img_names = os.listdir('English_Fonts/'+ style_name)
 # style_img_names.sort()
 # style_img_names = style_img_names[36:]
