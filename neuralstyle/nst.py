@@ -65,6 +65,7 @@ loader = transforms.Compose(
 )
 target_name = sys.argv[1]
 style_imgs = []
+style_letter = sys.argv[3]
 style_name = sys.argv[2]
 result_file = "Generated/"+style_name+"/"+target_name
 target_name = "Kannada_Fonts/Belur/" + target_name
@@ -74,7 +75,7 @@ print(style_name, "-", target_name)
 # style_img_names.sort()
 # style_img_names = style_img_names[36:]
 # style_img_names = ["008.png", "020.png", "028.png", "041.png", "042.png", "059.png"]
-style_img_names = ["042.png"]
+style_img_names = [style_letter]
 for style_img_name in style_img_names:
     style_img = load_image('English_Fonts/'+ style_name + "/" + style_img_name)
     style_imgs.append(style_img)
