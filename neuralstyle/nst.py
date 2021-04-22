@@ -67,9 +67,13 @@ target_name = sys.argv[1]
 style_imgs = []
 style_letter = sys.argv[3]
 style_name = sys.argv[2]
-result_file = "Generated/"+style_name+"/"+target_name
+
+result_file_input = "Generated/"+style_name+"/"+target_name[:-4]+"_I.png"
+
+result_file = "Generated/"+style_name+"/"+target_name[:-4]+"_O.png"
 target_name = "Kannada_Fonts/Belur/" + target_name
 original_img = load_image(target_name)
+save_image(original_img, result_file_input)
 print(style_name, "-", target_name)
 # style_img_names = os.listdir('English_Fonts/'+ style_name)
 # style_img_names.sort()
