@@ -94,9 +94,9 @@ model = VGG().to(device).eval()
 
 # Hyperparameters
 total_steps = 5000
-learning_rate = 0.01
-alpha = 10
-beta = 0.1
+learning_rate = 0.001
+alpha = 100
+beta = 0.3
 optimizer = optim.Adam([generated], lr=learning_rate)
 loss = []
 
