@@ -51,7 +51,7 @@ def load_image(image_name):
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-imsize = int(sys.argv[5])
+imsize = int(sys.argv[4])
 
 # Here we may want to use the Normalization constants used in the original
 # VGG network (to get similar values net was originally trained on), but
