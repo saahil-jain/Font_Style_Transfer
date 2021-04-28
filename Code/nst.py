@@ -10,6 +10,16 @@ import torchvision.models as models
 from torchvision.utils import save_image
 import torchvision.transforms as transforms
 
+print("Letter        :", sys.argv[1])
+print("Style         :", sys.argv[2])
+print("Style Letter  :", sys.argv[3])
+print("Epochs        :", sys.argv[4])
+print("Image Size    :", sys.argv[5])
+print("Learning Rate :", sys.argv[6])
+print("Alpha         :", sys.argv[7])
+print("Beta          :", sys.argv[8])
+
+
 class VGG(nn.Module):
     def __init__(self):
         super(VGG, self).__init__()
