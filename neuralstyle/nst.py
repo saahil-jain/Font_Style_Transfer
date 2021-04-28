@@ -51,7 +51,7 @@ def load_image(image_name):
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-imsize = sys.argv[5]
+imsize = int(sys.argv[5])
 
 # Here we may want to use the Normalization constants used in the original
 # VGG network (to get similar values net was originally trained on), but
@@ -93,10 +93,10 @@ generated = original_img.clone().requires_grad_(True)
 model = VGG().to(device).eval()
 
 # Hyperparameters
-total_steps = sys.argv[4]
-learning_rate = sys.argv[6]
-alpha = sys.argv[7]
-beta = sys.argv[8]
+total_steps = int(sys.argv[4])
+learning_rate = float(sys.argv[6])
+alpha = float(sys.argv[7])
+beta = float(sys.argv[8])
 optimizer = optim.Adam([generated], lr=learning_rate)
 loss = []
 
