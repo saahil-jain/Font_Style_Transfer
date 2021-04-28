@@ -79,9 +79,9 @@ style_imgs = []
 style_letter = sys.argv[3]
 style_name = sys.argv[2]
 
-result_file_input = "Generated/"+style_name+"/"+target_name[:-4]+"_I.png"
+result_file_input = "Test/Generated_I.png"
 
-result_file = "Generated.png"
+result_file = "Test/Generated_O.png"
 target_name = "Kannada_Fonts/Belur/" + target_name
 original_img = load_image(target_name)
 save_image(original_img, result_file_input)
@@ -167,8 +167,8 @@ for step in tqdm(range(1,total_steps+1)):
     
     if step % 100 == 0:
         save_image(generated, result_file)
-    # if step % 1000 == 0:
-    #     save_image(generated, "generated_"+str(step)+".png")
+    if step % 1000 == 0:
+        save_image(generated, "Test/generated_"+str(step)+".png")
         
 
 # print(loss)
