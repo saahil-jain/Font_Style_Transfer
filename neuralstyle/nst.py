@@ -10,6 +10,16 @@ import torchvision.models as models
 from torchvision.utils import save_image
 import torchvision.transforms as transforms
 
+# print("Letter        :", sys.argv[1])
+# print("Style         :", sys.argv[2])
+# print("Style Letter  :", sys.argv[3])
+# print("Epochs        :", sys.argv[4])
+# print("Image Size    :", sys.argv[5])
+# print("Learning Rate :", sys.argv[6])
+# print("Alpha         :", sys.argv[7])
+# print("Beta          :", sys.argv[8])
+
+
 class VGG(nn.Module):
     def __init__(self):
         super(VGG, self).__init__()
@@ -51,7 +61,8 @@ def load_image(image_name):
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-imsize = int(sys.argv[4])
+# imsize = int(sys.argv[4])
+imsize = 200
 
 # Here we may want to use the Normalization constants used in the original
 # VGG network (to get similar values net was originally trained on), but
@@ -93,10 +104,14 @@ generated = original_img.clone().requires_grad_(True)
 model = VGG().to(device).eval()
 
 # Hyperparameters
-total_steps = int(sys.argv[4])
-learning_rate = float(sys.argv[6])
-alpha = float(sys.argv[7])
-beta = float(sys.argv[8])
+# total_steps = int(sys.argv[4])
+# learning_rate = float(sys.argv[6])
+# alpha = float(sys.argv[7])
+# beta = float(sys.argv[8])
+total_steps = 4000
+learning_rate = 0.01
+alpha = 10
+beta = 0.8
 optimizer = optim.Adam([generated], lr=learning_rate)
 loss = []
 
