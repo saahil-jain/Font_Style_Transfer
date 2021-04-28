@@ -79,9 +79,9 @@ style_imgs = []
 style_letter = sys.argv[3]
 style_name = sys.argv[2]
 
-result_file_input = "Test/Generated_I.png"
+result_file_input = "Test/Input.png"
 
-result_file = "Test/Generated_O.png"
+result_file = "Test/Generated.png"
 target_name = "Kannada_Fonts/Belur/" + target_name
 original_img = load_image(target_name)
 save_image(original_img, result_file_input)
@@ -93,6 +93,7 @@ print(style_name, "-", target_name)
 style_img_names = [style_letter]
 for style_img_name in style_img_names:
     style_img = load_image('English_Fonts/'+ style_name + "/" + style_img_name)
+    save_image(style_img, "Test/Style.png")
     style_imgs.append(style_img)
 
 # initialized generated as white noise or clone of original image.
