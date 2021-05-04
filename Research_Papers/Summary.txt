@@ -1,0 +1,120 @@
+######################################################################################################################################################################################################################################################################################################################################################################################
+
+Multi-Content GAN for Few-Shot Font Style Transfer
+Samaneh Azadi, Matthew Fisher, Vladimir Kim, Zhaowen Wang, Eli Shechtman, Trevor Darrell
+UC Berkeley,
+Adobe Research
+
+Summary:
+The paper propose an end-to-end stacked conditional GAN model to achieve style transfer for fonts. The paper attempts to transfer both the typographic stylization, like serifs and ears, as well as the textual stylization ,like color gradients and effects.
+The project consist of two Machine learning models, first a stacked cGAN architecture to predict the coarse glyph shapes, and next an ornamentation network to predict color and texture of the final glyphs. The two models are trained together and specialized for each font. 
+For each font the models are trained on a few letters and then the style of these few alphabets is then applied to all the other letters of the alphabet.
+The collected dataset for this approach includes 10,000 different fonts styles of the english alphabets, which include fonts from movie titles and and gradient fonts. 
+As per our observations the style transfer achieved using this method was the best of all the other work in this area, however the accuracy of style transfer is good only for letters very similar to the letters in the training set. 
+
+Pros:
+Achieves good level of style transfer for letters similar to training letters.
+
+Cons: 
+Style transfer is good only for letters similar to the training data.
+Works only for letters of the same language.
+Model can't be applied to languages like Kannada as the letters itself vary a lot.
+
+
+
+######################################################################################################################################################################################################################################################################################################################################################################################
+
+Typeface Completion with Generative Adversarial Networks
+Yonggyu Park, Junhyun Lee, Yookyung Koh, Inyeop Lee, Jinhyuk Lee, Jaewoo Kang
+Department of Computer Science and Engineering
+Korea University
+
+Summary:
+The paper aims to build a model that takes the image of one character of a font as input and generates all the other characters of the alphabet in the same font of the input character.
+The paper proposes Typeface Completion Network, which TCN consists of two encoders, a generator and a discriminator. the two encoders, typeface encoder and content encoder, each return a vector that combines the different kinds of information. The generator, receives input and target character labels along with the two vectors from the encoders and generates the final output image. The discriminator determines if the generated image is real and this is repeated until the generated images are of desirable quality.
+the concept is applied to fonts of English as well as Chinese and achieves style transfer of reasonably good quality. The English dataset consists of 907 different fonts of the uppercase alphabets. The Chinese dataset consists of 150 different fonts of the 1000 most used characters.
+
+Pros:
+Can generate same fonts for all letters of the language with just one input letter.
+
+Cons:
+Hight data dependency. 
+Style learning from input letter cannot be extrapolated to letters outside the training set.
+
+
+
+######################################################################################################################################################################################################################################################################################################################################################################################
+
+Attribute2Font: Creating Fonts You Want From Attributes
+YIZHI WANG, China YUE GAO, China ZHOUHUI LIAN
+Wangxuan Institute of Computer Technology
+Peking University, China
+
+Summary:
+The paper aims to generate glyph images according to the user-specified font attributes and their values. There are 37 different kind font attributes some of which are - Strong, Angular, Bad, Disorderly, Happy, Italic, Serif, Thin and Wide. the value of these attributes are based on features of the glyph for example - strong defines how bold the letters are while artistic defines how handwritten the letters look. once trained on a large dataset the model can generate fonts for combinations of these attributes that it was never trained on.
+The concept is unique by the fact that instead of boolean values for each attribute, here we use continious values for each attribute which helps identify the magnitude of each attribute we need in the font. 
+The dataset consists of 148 attribute-labelled fonts and 968 unlabelled fonts.
+Although the paper produces very good results, its high data dependency on fonts along with labels is a strong limitation. 
+
+
+Pros:
+Can generate style consistent fonts for an incredibly large combination of attribute values.
+Can focus more on specific attributes and less on other attributes.
+Solution would work for any language If the abundant data is available.
+
+Cons:
+Large amounts of labelled data needed.
+Can't work for Indian languages like Kannada as fonts itself are limited. 
+
+
+
+######################################################################################################################################################################################################################################################################################################################################################################################
+
+Awesome Typography: Statistics-Based Text Effects Transfer
+Shuai Yang, Jiaying Liu, Zhouhui Lian and Zongming Guo
+Institute of Computer Science and Technology
+Peking University, Beijing, China
+
+Summary:
+This paper attempts to achieve transfer of special-effects for fonts. The special effects include texture synthesis, shadows, flames, multicolored neon gradients.
+To achieve the goal the model takes 3 images as input, the source raw text image, the source styled text image and the target raw text image. the pixels are divided into 16 classes based on their distance from the skeletal input image and based on analytics the effect is applied on the target image. This analysis consists of 3 parts 
+Appearance Term - To preserve coarse grained texture structures and details.
+Distribution Term - To ensures that the sub-effects in the target image and the source example are similarly distributed.
+Psycho-Visual Term - To prevent over-repetitiveness of certain source patches.
+together these three ensure a well balanced special effect transfer.
+
+Pros:
+Special-effect transfer can be achieved to a very high accuracy.
+Since machine learning is not required the genenration process is quick and new special effects can be accomodated almost instantly. 
+
+Cons:
+Cannot generate any new fonts or special effect, can just transfer from source to target.
+doesn't work on changing the structure of the input letter, but works on generating the structure and colours of the style input
+
+
+
+######################################################################################################################################################################################################################################################################################################################################################################################
+
+When we try to solve any sort of supervised learning task, the most important part becomes choosing the right loss function.
+The initial loss function we used provided us with limited results that were not usable. This is because the style loss calculated was appropriate for images with colours where the loss functions could recognise colours and their shapes and sizes. However for fonts that are all black and having completely different shapes, that style loss seems inappropriate.
+Hence we were required to develop our own loss function. We wrote a script to help us evaluate the loss function.
+this script took two fonts styles as input and took all combinations of letters pairs of the first font and second font as well as all combination of letter pairs of the second font with itself.
+loss was calculated for each pair and the results were compared. Ideally the style losses for combinations of letters pairs of the first font and second font should be really high and style loss of letter pairs of the second font with itself should be minimal.
+Having created our own loss function we could see the effectiveness of our new loss function clearly.
+Earlier the ratio of the average style loss of the letters of same fonts to the average style loss of the letters of different fonts was about 8:10
+With our new loss function, ratio of the average style loss of the letters of same fonts to the average style loss of the letters of different fonts came to be about 4:10
+This can be seen in the reference images below.
+
+
+
+######################################################################################################################################################################################################################################################################################################################################################################################
+
+new font generation consists of the following steps, which are repeated until desirable outputs are achieved:
+1. The inputs include the style image, target character and the generated image.
+2. The three inputs are passed to the Neural network iteratively and the loss calculated is back propagated.
+3. The output of each iteration is passed as input to the next iteration.
+The most important step in this cycle is the loss calculation. To calculate the loss at each iteration, we split it into 2 parts:
+1. Content Loss - refers to the difference in structure of the output image to the input target image
+2. Style Loss - refers to the difference in Style of the output image to the input style image
+the total loss consists of a weighted sum of the Content Loss and Style Loss.
+these are calculated as follows:
