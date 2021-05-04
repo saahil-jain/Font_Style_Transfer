@@ -41,5 +41,5 @@ epochs=4000
 image_size=200
 learning_rate=0.01
 alpha=10
-beta=0.8
+beta=0.01
 python3 nst.py $letter $Style $style_letter $epochs $image_size $learning_rate $alpha $beta
